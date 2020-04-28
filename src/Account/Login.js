@@ -6,6 +6,7 @@ import uuid from "uuid/v4";
 function Login({ addUser }) {
   const [formData, setFormData] = useState({});
 
+  // handle changes in form to keep React happy
   const handleChange = evt => {
     const { name, value } = evt.target;
     setFormData(formData => ({
@@ -14,6 +15,7 @@ function Login({ addUser }) {
     }));
   };
 
+  // add user to DB
   const gatherInput = evt => {
     evt.preventDefault();
     addUser({ ...formData, id: uuid() });

@@ -4,6 +4,7 @@ import Routes from "./Routes/Routes";
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 
+// TODO: GET a doc string
 function App() {
   return (
     <div className="App">
