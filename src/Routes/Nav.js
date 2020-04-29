@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import AuthContext from '../AuthContext';
+
 
 // navigation at top of page
 function Nav() {
-  
+  const { token } = useContext(AuthContext);
+
   return (
     <nav>
-      <NavLink exact to="/">Home</NavLink>
-      <NavLink to="/companies">Companies</NavLink>
-      <NavLink to="/jobs">Jobs</NavLink>
-      <NavLink to="/profile">Profile</NavLink>
-      <NavLink to="/login">Login</NavLink>
+      {token ?<nav>
+                <NavLink exact to="/">Home</NavLink>
+                <NavLink to="/companies">Companies</NavLink>
+                <NavLink to="/jobs">Jobs</NavLink>
+                <NavLink to="/profile">Profile</NavLink>
+                <NavLink to="/logout">Log out</NavLink>
+              </nav>
+             :<NavLink to="/login">LogIn</NavLink>}
     </nav>
   )
 }

@@ -30,6 +30,13 @@ class JoblyApi {
     let res = await this.request(`companies/${handle}`);
     return res.company;
   }
+
+  static async logIn({username, password}){
+    let res = await this.request('login', {username, password}, "post");
+    return res.token
+  }
+
+
 }
 
 export default JoblyApi;
