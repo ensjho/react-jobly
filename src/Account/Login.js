@@ -1,14 +1,18 @@
 import React, { useState, useContext } from "react";
-import uuid from "uuid/v4";
 import JoblyApi from "../JoblyApi"
 import AuthContext from '../AuthContext';
-
+import { useHistory } from "react-router-dom";
 /** Sign Up Form for adding a new user */
 
-function Login({ addUser }) {
+// consider moving form logic up to parent
+
+function Login() {
+  // set history state for potential redirect
+  let history = useHistory()
+
   const [formData, setFormData] = useState({});
   const [signUpPage, setLogInOrSignUp] = useState(false);
-  const {token, setToken} = useContext(AuthContext)
+  const {setToken} = useContext(AuthContext)
 
   // handle changes in form to keep React happy
   const handleChange = evt => {
@@ -21,20 +25,29 @@ function Login({ addUser }) {
   };
 
   // add user to DB
+  // TODO: pick better names here
   const gatherInput = evt => {
     evt.preventDefault();
-    addUser({ ...formData, id: uuid() });
-    setFormData({});
+    async function registerUser(){
+      try {
+        let userToken = await JoblyApi.register(formData);
+        setToken(userToken);
+        history.push('/jobs');
+      } catch (err) {
+        alert("INVALID REGISTRATION!")
+      }
+    }
+    registerUser();
   }
   
-  // log in the user, return token
+  // log in the user, update token, redirect to Jobs page
   const handleLogIn = evt => {
     evt.preventDefault();
     async function fetchUser(){
       try{
       let userToken = await JoblyApi.logIn(formData);
       setToken(userToken);
-      setFormData({});
+      history.push('/jobs');
       }catch(err){
         alert("INVALID LOG IN!")
       }
@@ -45,6 +58,7 @@ function Login({ addUser }) {
 
   let jsxLogIn;
 
+  // Log in form, displayed if login button is pressed
   if (signUpPage === false) {
     jsxLogIn = (
       <form className="SignUpForm" onSubmit={handleLogIn}>
@@ -73,6 +87,7 @@ function Login({ addUser }) {
     )
   }
 
+  // SIGNUP PAGE FORM, displayed when signup button is pressed
   if (signUpPage === true) {
     jsxLogIn = (
       <div>
@@ -80,9 +95,10 @@ function Login({ addUser }) {
           <div>
             <label htmlFor="username">Username: </label>
             <input
+              onChange={handleChange}
               name="username"
               placeholder="username"
-              value="username"
+              value={formData.username}
               id="username"
             />
           </div>
@@ -112,8 +128,8 @@ function Login({ addUser }) {
               onChange={handleChange}
               name="lastName"
               placeholder="lastName"
-              id="lastName"
               value={formData.lastName}
+              id="lastName"
             />
           </div>
           <div>
@@ -131,6 +147,7 @@ function Login({ addUser }) {
       </div>)
   }
 
+  // button toggle for displaying correct form
   const handleToggleLog = () => setLogInOrSignUp(false)
   const handleToggleSign = () => setLogInOrSignUp(true)
 
@@ -144,3 +161,9 @@ function Login({ addUser }) {
 }
 
 export default Login;
+
+/** STEPS
+ *  check login, if valid store in LS
+ *  joblyAPI will extract from LS
+ * 
+ */

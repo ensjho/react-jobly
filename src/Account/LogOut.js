@@ -1,11 +1,12 @@
-import React, { useState, useContext } from "react";
+import { useContext } from "react";
 import AuthContext from '../AuthContext';
 import { Redirect } from "react-router-dom";
 
-/** Sign Up Form for adding a new user */
+/** Log out: clear token context state, and remove token from local storage */
 
 function LogOut() {
-  const {token, setToken} = useContext(AuthContext)
+  const {setToken} = useContext(AuthContext)
+  localStorage.removeItem('token');
   setToken('');
   return Redirect("/");
 }

@@ -6,8 +6,10 @@ import uuid from "uuid/v4";
  *  Username can not be updated;
  */
 
-function Profile({ updateUser }) {
+function Profile({ userInfo, updateUser }) {
   const [formData, setFormData] = useState({});
+
+  console.log("USER INFO:", userInfo)
 
   const handleChange = evt => {
     const { name, value } = evt.target;

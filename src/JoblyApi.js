@@ -1,15 +1,13 @@
 import axios from "axios";
+import useLocalStorage from "./hooks";
 
 class JoblyApi {
   static async request(endpoint, paramsOrData = {}, verb = "get") {
-    paramsOrData._token = ( // for now, hardcode token for "testing"
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc" +
-    "3RpbmciLCJpc19hZG1pbiI6ZmFsc2UsImlhdCI6MTU1MzcwMzE1M30." +
-    "COmFETEsTxN_VfIlgIKw0bYJLkvbRQNgO1XCSE8NZ0U");
+    paramsOrData._token = localStorage.getItem('token');
 
     console.debug("API Call:", endpoint, paramsOrData, verb);
 
-    try {
+    try { 
       return (await axios({
         method: verb,
         url: `http://localhost:3001/${endpoint}`,
@@ -31,11 +29,26 @@ class JoblyApi {
     return res.company;
   }
 
+  // log in user
   static async logIn({username, password}){
     let res = await this.request('login', {username, password}, "post");
-    return res.token
+    return res.token;
   }
 
+  // call server and register new user
+  static async register({username, password, first_name, last_name, email}) {
+    let res = await this.request(
+      'users',
+      {username, password, first_name, last_name, email},
+      "post"
+    );
+    return res.token;
+  }
+
+  static async getUser(username) {
+    let res = await this.request(`users/${username}`);
+    return res.user;
+  }
 
 }
 

@@ -1,11 +1,27 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
+import JoblyApi from './JoblyApi';
+import { decode } from 'jsonwebtoken';
 
-function useLocalStorage(newToken){
+function useLocalStorage(){
+  const initialToken = localStorage.getItem('token') || null;
+  const [token, setToken] = useState(initialToken);
+  console.log("NEW TOKEN INCOMING", token)
+  if ( token ) {
+    localStorage.setItem('token', token);
+  }
+  
+  return [token, setToken];
+}
 
-  const [token, setToken] = useState("");
-  localStorage.setItem('token', newToken);
+async function getLoggedInUser() {
+  const initialToken = localStorage.getItem('token') || null;
+  if (initialToken) {
+    const { username } = decode(initialToken);
+    let currUser = await JoblyApi.getUser(username);
+    console.log(currUser);
+    return currUser;
 
-  return [token, setToken]
+  }
 }
 
 // function useLocalStorage(key, initialValue) {
@@ -44,4 +60,7 @@ function useLocalStorage(newToken){
 //   return [storedValue, setValue];
 // }
 
-export default useLocalStorage;
+export {
+  useLocalStorage,
+  getLoggedInUser
+};

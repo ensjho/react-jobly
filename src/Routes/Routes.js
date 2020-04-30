@@ -8,14 +8,16 @@ import Login from "../Account/Login";
 import LogOut from "../Account/LogOut"; 
 import Profile from "../Account/Profile";
 
+// TODO: further study on managing access on routes
+
 // handles all routing for our app
-function Routes() {
+function Routes({ userInfo }) {
   return (
     <Switch>
       <Route exact path="/companies"><Companies /></Route>
       <Route exact path="/jobs"><Jobs/></Route>
       <Route exact path="/companies/:handle"><Company /></Route>
-      <Route exact path="/profile"><Profile /></Route>
+      <Route exact path="/profile"><Profile userInfo={userInfo} /></Route>
       <Route exact path="/login"><Login /></Route>
       <Route exact path="/logout"><LogOut /></Route>
       <Route exact path="/"><Home /></Route>

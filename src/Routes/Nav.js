@@ -1,11 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import AuthContext from '../AuthContext';
 
+// further study: can we make the logout link more like a button/form
 
 // navigation at top of page
 function Nav() {
   const { token } = useContext(AuthContext);
+  console.log("NAV CHECK, IS TOKEN VALID?", token);
 
   return (
     <nav>
