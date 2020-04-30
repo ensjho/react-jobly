@@ -1,5 +1,4 @@
 import axios from "axios";
-import useLocalStorage from "./hooks";
 
 class JoblyApi {
   static async request(endpoint, paramsOrData = {}, verb = "get") {
@@ -37,9 +36,10 @@ class JoblyApi {
 
   // call server and register new user
   static async register({username, password, first_name, last_name, email}) {
+    let photo_url = "https://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
     let res = await this.request(
       'users',
-      {username, password, first_name, last_name, email},
+      {username, password, first_name, last_name, email, photo_url},
       "post"
     );
     return res.token;
@@ -50,6 +50,23 @@ class JoblyApi {
     return res.user;
   }
 
+  static async updateUser({ username, first_name, last_name, email, photo_url, password }) {
+    let res = await this.request(
+        `users/${username}`,
+        {first_name, last_name, email, photo_url, password },
+        "patch"
+      );
+      return res.user;
+  }
+
+  static async apply(id, username) {
+    let res = await this.request(
+      `jobs/${id}/apply`,
+      {id, username},
+      "post"
+    );
+    return res.message;
+  }
 }
 
 export default JoblyApi;

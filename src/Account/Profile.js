@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import uuid from "uuid/v4";
+import JoblyApi from "../JoblyApi";
 
 /** Form for updating the profile; 
  *  requires a valid password;
@@ -7,9 +7,8 @@ import uuid from "uuid/v4";
  */
 
 function Profile({ userInfo, updateUser }) {
-  const [formData, setFormData] = useState({});
-
-  console.log("USER INFO:", userInfo)
+  const [formData, setFormData] = useState(userInfo);
+  const [messages, setMessages] = useState("")
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -19,44 +18,54 @@ function Profile({ userInfo, updateUser }) {
     }));
   };
 
-  const gatherInput = evt => {
+  const submitUpdates = evt => {
     evt.preventDefault();
-      updateUser({ ...formData, id: uuid() });
-      setFormData({});
+    async function submitChanges(){
+      try {
+        const updatedUser = await JoblyApi.updateUser(formData);
+        setFormData(updatedUser);
+        setMessages("Update successful!")
+      }
+      catch (err) {
+        setMessages(`Update failed! ${err}`);
+        console.debug(err);
+      }
     }
+    submitChanges();
+  }
 
 
   return (
     <div>
       <h1> Profile </h1>
-      <form className="ProfileForm" onSubmit={gatherInput}>
+      <form className="ProfileForm" onSubmit={submitUpdates}>
         <div>
           <label htmlFor="username">Username: </label>
           <input disabled
             name="username"
             placeholder="username"
-            value="TestUser"
+            value={formData.username}
             id="username"
           />
         </div>
         <div>
-          <label htmlFor="firstName">First Name: </label>
+          <label htmlFor="first_name">First Name: </label>
           <input
             onChange={handleChange}
-            name="firstName"
-            placeholder="firstName"
-            value={formData.firstName}
+            name="first_name"
+            placeholder="first_name"
+            value={formData.first_name}
             id="firstName"
           />
         </div>
         <div>
-          <label htmlFor="lastName">Last Name: </label>
+          <label htmlFor="last_name">Last Name: </label>
           <input
             onChange={handleChange}
-            name="lastName"
-            placeholder="lastName"
+            name="last_name"
+            placeholder="last_name"
             id="lastName"
-            value={formData.lastName}
+            value={formData.last_name}
           />
         </div>
         <div>
@@ -70,12 +79,12 @@ function Profile({ userInfo, updateUser }) {
           />
         </div>
         <div>
-          <label htmlFor="photoUrl">Photo URL: </label>
+          <label htmlFor="photo_url">Photo URL: </label>
           <input
             onChange={handleChange}
-            name="photoUrl"
+            name="photo_url"
             placeholder="photoUrl"
-            value={formData.photoUrl}
+            value={formData.photo_url}
             id="photoUrl"
           />
         </div>
@@ -92,6 +101,7 @@ function Profile({ userInfo, updateUser }) {
    
         <button id="updateProfile">Save Changes</button>
       </form>
+      <div id="messageArea" >{messages}</div>
     </div>
   );
 }

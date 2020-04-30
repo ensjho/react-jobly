@@ -76,6 +76,7 @@ function Login() {
           <label htmlFor="password">Password: </label>
           <input
             onChange={handleChange}
+            type="password"
             name="password"
             placeholder="password"
             value={formData.password}
@@ -106,6 +107,7 @@ function Login() {
             <label htmlFor="password">Password: </label>
             <input
               onChange={handleChange}
+              type="password"
               name="password"
               placeholder="password"
               value={formData.password}
@@ -113,22 +115,22 @@ function Login() {
             />
           </div>
           <div>
-            <label htmlFor="firstName">First Name: </label>
+            <label htmlFor="first_name">First Name: </label>
             <input
               onChange={handleChange}
-              name="firstName"
+              name="first_name"
               placeholder="firstName"
-              value={formData.firstName}
+              value={formData.first_name}
               id="firstName"
             />
           </div>
           <div>
-            <label htmlFor="lastName">Last Name: </label>
+            <label htmlFor="last_name">Last Name: </label>
             <input
               onChange={handleChange}
-              name="lastName"
+              name="last_name"
               placeholder="lastName"
-              value={formData.lastName}
+              value={formData.last_name}
               id="lastName"
             />
           </div>
@@ -142,7 +144,7 @@ function Login() {
               id="email"
             />
           </div>
-          <button id="addNewUser">Save Changes</button>
+          <button id="addNewUser">Create Account</button>
         </form>
       </div>)
   }

@@ -7,7 +7,6 @@ import AuthContext from '../AuthContext';
 // navigation at top of page
 function Nav() {
   const { token } = useContext(AuthContext);
-  console.log("NAV CHECK, IS TOKEN VALID?", token);
 
   return (
     <nav>

@@ -15,8 +15,8 @@ function Routes({ userInfo }) {
   return (
     <Switch>
       <Route exact path="/companies"><Companies /></Route>
-      <Route exact path="/jobs"><Jobs/></Route>
-      <Route exact path="/companies/:handle"><Company /></Route>
+      <Route exact path="/jobs"><Jobs userInfo={userInfo} /></Route>
+      <Route exact path="/companies/:handle"><Company userInfo={userInfo} /></Route>
       <Route exact path="/profile"><Profile userInfo={userInfo} /></Route>
       <Route exact path="/login"><Login /></Route>
       <Route exact path="/logout"><LogOut /></Route>

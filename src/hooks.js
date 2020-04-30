@@ -2,10 +2,12 @@ import {useState} from 'react';
 import JoblyApi from './JoblyApi';
 import { decode } from 'jsonwebtoken';
 
+// todo: consider calling func more token-related, or make this more generic
+// and accept a key too
+
 function useLocalStorage(){
   const initialToken = localStorage.getItem('token') || null;
   const [token, setToken] = useState(initialToken);
-  console.log("NEW TOKEN INCOMING", token)
   if ( token ) {
     localStorage.setItem('token', token);
   }
@@ -13,12 +15,14 @@ function useLocalStorage(){
   return [token, setToken];
 }
 
+// todo: this doesn't belong in hooks, move to more appropriate location
+// todo: wrap API call in try/catch
+
 async function getLoggedInUser() {
   const initialToken = localStorage.getItem('token') || null;
   if (initialToken) {
     const { username } = decode(initialToken);
     let currUser = await JoblyApi.getUser(username);
-    console.log(currUser);
     return currUser;
 
   }

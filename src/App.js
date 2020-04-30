@@ -10,6 +10,8 @@ import './App.css';
  * provide context of value token */
 function App() {
   // set state for token
+
+  // todo: revisit this, seems redundant
   const [token, setToken] = useLocalStorage();
   const possibleToken = localStorage.getItem("token");
   const [userInfo, setUserInfo] = useState({});
@@ -25,10 +27,12 @@ function App() {
   }, [setToken, possibleToken]);
   
 
+  // todo: either pass userInfo as prop or context, not both
+  // todo: we don't need to pass token everywhere, use userInfo
   return (
     <div className="App">
       <BrowserRouter>
-        <AuthContext.Provider value={{token, setToken}}>
+        <AuthContext.Provider value={{token, setToken, userInfo, setUserInfo}}>
           <Nav />
           <Routes userInfo={userInfo} />
         </AuthContext.Provider>
